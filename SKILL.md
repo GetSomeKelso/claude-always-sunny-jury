@@ -54,8 +54,13 @@ Three entry paths:
    the menu, go straight to STEP 2.
 2. **Inline Mode-B trigger + case** (e.g. "trial by the gang: should we go
    passwordless?") → Mode B. Same — skip the menu, go to STEP 2.
-3. **Bare invocation** (a trigger phrase with no case attached, or an ambiguous
-   request) → print the menu below, then STOP and wait.
+3. **Trigger phrase, no case** (a recognized Mode-A or Mode-B phrase with no case
+   text attached — e.g. just "Sunny jury" or "full deliberation") → resolve the
+   mode from the phrase class in the map below, skip the menu, print
+   `Enter security case:`, STOP, and capture the next message as the case
+   **verbatim**.
+4. **Bare / ambiguous invocation** (no recognizable trigger phrase, or a genuinely
+   ambiguous request) → print the menu below, then STOP and wait.
 
    ```
    Always Sunny Security Jury
@@ -74,10 +79,11 @@ Three entry paths:
    Enter A or B:
    ```
 
-   On the reply: `A` / `a` / "trial by gang" / "ask the gang" → Mode A. `B` / `b`
-   / "full deliberation" / "deliberation" → Mode B. Anything else → reprint the
-   menu. Once a mode is chosen, print `Enter security case:`, STOP, wait, and
-   capture the next message as the case **verbatim**.
+   On the reply: `A` / `a` / "ask the gang" (or any Mode-A phrase from the map
+   below) → Mode A. `B` / `b` / "trial by the gang" / "full deliberation" (or any
+   Mode-B phrase from the map below) → Mode B. Anything else → reprint the menu.
+   Once a mode is chosen, print `Enter security case:`, STOP, wait, and capture
+   the next message as the case **verbatim**.
 
 **Trigger phrase → mode map** (for inline path 1/2):
 - **Mode A:** `ask the gang`, `Sunny jury`, `Paddy's Pub jury`, `IATGANG analysis`,
@@ -392,6 +398,10 @@ opening response. In a SINGLE message, dispatch exactly **6** Task calls
 (`subagent_type: general-purpose`), one per juror's cross-examination block
 below, substituting the same packet into each `{{EVIDENCE_PACKET}}`.
 
+If a cross-exam juror (tasks 7–12) returns nothing usable, substitute that
+juror's no-show line from STEP 3 in their transcript slot. Do NOT re-run the
+phase, skip the juror's slot, or write the rebuttal yourself.
+
 Emit only: > **Cross-examination in progress.**
 
 Evidence packet format substituted into every cross-exam prompt:
@@ -582,6 +592,21 @@ cross-examinations). Dispatch ONE Task call (`subagent_type: general-purpose`)
 with the block below, substituting the packet into `{{CLOSING_ARGUMENTS_PACKET}}`.
 
 Emit only: > **Closing arguments heard. The Lawyer is reviewing the billable hours.**
+
+**If The Lawyer (task 13) returns nothing usable, retry the dispatch exactly
+ONCE.** If it still returns nothing, do NOT write a ruling yourself — that would
+violate Critical Rules 1 and 7. Instead, render the Phase 4 transcript as normal
+but replace the entire **Phase 3: The Lawyer's Ruling** section with this block
+verbatim:
+
+```markdown
+## Phase 3: The Lawyer's Ruling
+
+> ⚠️ **THE LAWYER FAILED TO APPEAR.**
+> The Lawyer reviewed the billable hours, looked at this case, and left. No ruling
+> was issued. The opening arguments and cross-examination above stand
+> un-adjudicated — read them and reach your own verdict. (Do not call back.)
+```
 
 #### THE LAWYER — Final Verdict
 ```

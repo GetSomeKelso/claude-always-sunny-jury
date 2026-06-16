@@ -80,9 +80,11 @@ should we implement passwordless authentication?
 ### Trigger phrases
 
 - **Mode A:** `ask the gang`, `Sunny jury`, `Paddy's Pub jury`, `IATGANG analysis`,
-  `security jury`, `panel review`, `devil's advocate`, `red-team-vs-blue-team`
+  `security jury`, `panel review`, `devil's advocate`, `red-team-vs-blue-team`,
+  `get the gang`, `jury session`
 - **Mode B:** `trial by the gang`, `full deliberation`, `cereal defense`,
-  `McPoyle vs Ponderosa`, `Reynolds vs Reynolds`, `let them argue`, `cross-examine`
+  `McPoyle vs Ponderosa`, `Reynolds vs Reynolds`, `let them argue`, `cross-examine`,
+  `objection`
 
 ## What you get
 
